@@ -43,7 +43,7 @@ Part B- Model Analysis.
 *Loads MEG spectral features from HCP MEG 89 subjects (Power Spectrum) and simulations features (Power Spectrum) (load 'MEG_Fitting.mat'). Then, it measures and plots the model performance (Squared Euclidean Distance and Correlation)* 
 
 3) MOM_analysis.mat 
-*Loads the baseline (no delay, optimal coupling in our ms), measures MOMs (5std above the baseline) for each band, measure MOMs Size, Duration, Occupancy; plots MOMs in all brain areas for a given optimal point and bars for size, duration, occupancy*
+*Loads the baseline (no delay, optimal coupling in our ms), measures MOMs in one optimal point (simu) (5std above the baseline) for each band, measure MOMs Size, Duration, Occupancy; plots MOMs in time in all brain areas for a given optimal point and bars for size, duration, occupancy; makes the video of MOMs in the optimal point over time*
 3.1) subplot_tight.mat
 *better than "subplot" - it helps in generating tight figures avoiding too much space between plots*
 
@@ -58,7 +58,8 @@ Part C- Data.
 File Name: SC_90aal_32HCP in Structural_Connectivity Folder
 Citation:  
 
-2) Simulation examples used to generate plots in the paper 
+2) Simulation examples used to generate plots in the paper. Please download them here: 
+https://liveuclac-my.sharepoint.com/:f:/g/personal/skgtfca_ucl_ac_uk/Etzx5-w3LFhMgPhJGXBErlgBwxCK2VYyTOHgUNk0pivHtw?e=kgmcgn  
 
 
 
