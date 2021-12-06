@@ -1,4 +1,4 @@
-HOPF DELAYED MODEL TOOLBOX 
+HOPF DELAY TOOLBOX
 
 Cite: 
 Synchronization in the Connectome: Metastable oscillatory modes emerge from interactions in the brain spacetime network
