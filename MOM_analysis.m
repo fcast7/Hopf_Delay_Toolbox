@@ -9,8 +9,10 @@
 %     Resonance is detected when power increases 5 STD above baseline
 %  2. For a selected working point (SIMU), define the time points when the power
 %     is above threshold in bands Delta, Theta, Alpha and Beta
-%  3.  Measure MOMs size, Duration and Occupancy. Plot.
-%  4.  Figure signals overtime (for each parcellated area) 
+%  3. Measure MOMs size, Duration and Occupancy. Plot.
+%  4. Figure signals overtime (for each parcellated area) 
+%  5. Video MOMs over time 
+%  6. Figure with sequence of relevant MOMs over top view from Top
 
 %  Needs: bandpasshopf.m, conver_back_to_time.m, subplot_tight.m
 %
@@ -29,9 +31,10 @@ beta = [13 30];
 low_pass=30;
 
 % 1- SIMULATION FILE TO READ and DEFINE BASELINE
-% addpath('Hopf_Delay_Toolbox');
-addpath(genpath('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu'));
-simulation_file={'a_Remote_K1E1_MD_0a-5.mat','a_Remote_K1E-1_MD_2a-5.mat','a_Remote_K1E1p1_MD_2a-5.mat','a_Remote_K1E1p7_MD_6a-5.mat','a_Remote_K1E1_MD_10a-5.mat'};
+addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Code\Hopf_Delay_Toolbox\Data\Simulations'))
+% addpath(genpath('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu'));
+
+simulation_file={'a_Remote_K1E1_MD_0a-5.mat','a_Remote_K1E-1_MD_3a-5.mat','a_Remote_K1E1_MD_3a-5.mat','a_Remote_K1E1p7_MD_3a-5.mat','a_Remote_K1E1_MD_10a-5.mat'};
 % simulation_file={'d4_HCP_Sim_Cluster_K1E1_MD0','d4_HCP_Sim_Cluster_K1E-1_MD3','Independent_AAL_HCP_Simu_K1E1_MD3','d4_HCP_Sim_Cluster_K1E1p7_MD3','AAL_HCP_Simu_K1E1_MD10'};
 simulation_names={'No delays','Weak K','Intermediate K','Strong K','Long delays'};
 
@@ -78,7 +81,7 @@ clear Zalpha Zbeta Ztheta Zfilt
 % Change the "simu" to look at other scenario outside the optimal working
 % point 
 
-simu=2;
+simu=4; %select your simulation of interest
 load(simulation_file{simu})
 N = size(Zsave,1);
 Order=[1:2:N N:-2:2];
@@ -396,7 +399,7 @@ xlabel('Time (seconds)','Fontsize',16)
 legend({'Mean Amplitude Envelope','Kuramoto Order Parameter'},'Orientation','horizontal','Fontsize',16)
 box off
 
-%% Video MOMs over time
+%% 5- Video MOMs over time
 
 T_timepoints=1:10:5000;
 
@@ -490,9 +493,9 @@ close(videoMOMs); %close the file
 
 
 
-%% FIGURE with sequence of MOMs over top view from Top
+%% 6- FIGURE with sequence of MOMs over top view from Top
 
-T_timepoints=3500:50:6000;
+T_timepoints=3500:50:6000; %select the time points more relevant for the explored frequency band 
 
 figure('color','w')
 
