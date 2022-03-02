@@ -8,8 +8,8 @@ function [Zsave, dt_save] = hopf_delays_simu(f,K,MD,SynDelay,sig,varargin)
 % INPUTS
 % - a is the bifurcation parameter 
 % - f (Hz) is the fundamental frequency of the natural limit cycle (e.g f=40Hz)
-% - dt is the resolution: the more this increases the higher the cost
-%   function
+% - dt is the temporal resolution: the smaller the dt, the higher the precision 
+%   at the expense of a higher cost function.
 %
 % ** FREE PARAMETERS **
 %
