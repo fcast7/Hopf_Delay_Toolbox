@@ -1,4 +1,4 @@
-function x=band_pass(y,freqrange,fres,do_plot)
+function x=bandpasshopf(y,freqrange,fres,do_plot)
 
 % function x=bandpass(y,lp,hp)
 %
