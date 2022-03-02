@@ -1,7 +1,6 @@
-function [Zsave, dt_save] = Hopf_Delays_Simu(f,K,MD,SynDelay,sig,varargin)
+function [Zsave, dt_save] = hopf_delays_simu(f,K,MD,SynDelay,sig,varargin)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% August 2021
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Function to run simulations of spontaneous whole-brain network activity
 % Where each brain area is represented by a dynamical unit with a
 % supercritical Hopf bifurcation.
@@ -32,7 +31,7 @@ function [Zsave, dt_save] = Hopf_Delays_Simu(f,K,MD,SynDelay,sig,varargin)
 % Adapted by Francesca Castaldo, March 2021, francesca.castaldo.20@ucl.ac.uk
 %
 %
-%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 save_data=1;  % Set to 1 to save the simulated data in the end
 % When called in a function, it is better to set this to 0.
@@ -43,21 +42,22 @@ switch numel(varargin)
         % If no additional input arguments, then set them here.
         % Define the Structural Network
         
-        load SC_90aal_32HCP.mat mat
+        load SC_90aal_32HCP.mat mat %load your functional connectivity matrices 
         red_mat=mat; 
-%       red_mat(red_mat<10)=0; %put to 0 all the fibers less than 10mm long to speed up
+%       red_mat(red_mat<10)=0; % Removes connections with less than 10
+%       detected fibers to speed up
         N=size(red_mat,1);
         %mat(mat<10)=0; 
         C=red_mat/mean(red_mat(ones(N)-eye(N)>0));
         % Such that the mean of all non-diagonal elements is 1.
         
-        load SC_90aal_32HCP.mat mat_D
+        load SC_90aal_32HCP.mat mat_D %load your distance matrix
         % Distance between areas
         D=mat_D;
         D=D/1000; % Distance matrix in meters
         
         % Define simulation Parameters
-        tmax=50; % in seconds
+        tmax=300; % in seconds
         t_prev=5; % in seconds
         dt_save=2e-3; % Resolution of saved brain activity in seconds
     case 5 % This mode is useful to accelerate simulation speed for loops over the main free parameters
