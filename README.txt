@@ -22,7 +22,7 @@ MEG Power Spectra (PS) for each subject and channel and the mean across channels
 MEG Fitting matrices (Simulations PS for each pair of parameters, Squared Euclidean Distance matrices, Correlation Matrices between simulated PS and MEG PS). 
 MEG HCP original data are not shared within the folder. For info and how do download them check the Manual: https://humanconnectome.org/storage/app/media/documentation/s1200/HCP_S1200_Release_Reference_Manual.pdf
 
-***********************************************************************************************************************************************************
+*************************************************************************************************************************************
 Part A- SIMULATE.
 
 1) hopf_delays_simu(f,K,MD,SynDelay,sig,varargin) *Gives Zsave as output (simulations) for each pair of the free parameters*
@@ -30,7 +30,7 @@ Part A- SIMULATE.
 2) hopf_delays_feature_extraction(a,dt_save,MD,expK,C) *Loads simulations and extracts features (PSD, Metastability, Synchrony, Spectral Entropy [...])*
    2.1) bandpasshopf 
      2.1.1) convert_back_to_time 
-***********************************************************************************************************************************************************
+*************************************************************************************************************************************
 
 Part B- ANALYSE and VISUALISE.
 
@@ -51,7 +51,7 @@ Part B- ANALYSE and VISUALISE.
 *Generates covariance matrices for selected points in the parameter space (specifically for No delays, weak coupling, Intermediate coupling - Optimal range, 
 Strong Coupling, Long Delay) for each band, and how many frequency-specific eigenvalues are found for each of the points aforamentioned.*
 
-*************************************************************************************************************************************************************
+***************************************************************************************************************************************
 
 Part C- DEMO Data.
 
