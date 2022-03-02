@@ -13,8 +13,7 @@ francesca.castaldo.20@ucl.ac.uk
  
 FILE DESCRIPTION: total of 10 functions/scripts.
 
-Part A- SIMULATE. Function 1) can be used to generate simulations and function 2) to extract spectral properties of simulated time series. 
-                  Demo simulations are in the Data->Simulation folder. In case one wants to run their own simulations, running them on a cluster is highly reccomended.  
+Part A- SIMULATE. Function 1) can be used to generate simulations and function 2) to extract spectral properties of simulated time series. Demo simulations are in the Data->Simulation folder. In case one wants to run their own simulations, running them on a cluster is highly reccomended.  
 
 Part B- ANALYSE and VISUALISE. To check/look at results/plots for the simulations available (DEMO simulations)
 
