@@ -13,12 +13,12 @@ francesca.castaldo.20@ucl.ac.uk
  
 FILE DESCRIPTION: total of 10 functions/scripts.
 
-Part A- SIMULATE. Function 1) can be used to generate simulations and function 2) to extract spectral properties of simulated time series. Demo simulations are in the Data->Simulation folder. In case one wants to run their own simulations, running them on a cluster is highly reccomended.  
+Part A- SIMULATE. Function 1) can be used to generate simulations and function 2) to extract spectral properties of simulated time series. In case one wants to run the whole parameter space running them on a cluster is highly reccomended. For downloading simulations, please contact the authors. 
 
-Part B- ANALYSE and VISUALISE. To check/look at results/plots for the simulations available (DEMO simulations)
+Part B- ANALYSE and VISUALISE. To check/look at results/plots (DEMO results available)
 
-Part C- DEMO Data. Structural Connectivity matrices to generate simulations; Simulations used to generate the figures in the paper; 
-MEG Power Spectra (PS) for each subject and channel and the mean across channels for each subject. 
+Part C- DEMO Data. Structural Connectivity matrices to generate simulations; Model Spectral features (Metastability, Synchrony and Global Peak frequency).
+MEG Power Spectra Density (PSD) for each subject and channel and the mean across channels for each subject. 
 MEG Fitting matrices (Simulations PS for each pair of parameters, Squared Euclidean Distance matrices, Correlation Matrices between simulated PS and MEG PS). 
 MEG HCP original data are not shared within the folder. For info and how do download them check the Manual: https://humanconnectome.org/storage/app/media/documentation/s1200/HCP_S1200_Release_Reference_Manual.pdf
 
