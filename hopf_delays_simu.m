@@ -57,7 +57,7 @@ switch numel(varargin)
         D=D/1000; % Distance matrix in meters
         
         % Define simulation Parameters
-        tmax=300; % in seconds
+        tmax=50; % in seconds
         t_prev=5; % in seconds
         dt_save=2e-3; % Resolution of saved brain activity in seconds
     case 5 % This mode is useful to accelerate simulation speed for loops over the main free parameters
