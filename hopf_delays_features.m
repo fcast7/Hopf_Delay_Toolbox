@@ -1,4 +1,4 @@
-function Hopf_delays_features
+function hopf_delays_features
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %  RUN SIMULATIONS 
@@ -55,7 +55,7 @@ f=40; %Intrinsic frequency in Hz
 sig=1e-3; % noise std 1e-3
 
 % First Free Parameter: Mean Delay 
-MD=0:1:30; % Reange of Mean Delay in ms or a fixed MD
+MD=0:1:20; % Reange of Mean Delay in ms or a fixed MD
 MD=MD.*1e-3; % Mean Delay in seconds 
 SynDelay=0; % Constant Synaptic Delay (Do not consider it if the model still need to be tested)
 
@@ -79,7 +79,7 @@ for g=1:length(K)
         k=K(g);
         md=MD(d);
         
-        [Z] = Hopf_Delays_Simu(f,k,md,SynDelay,sig,C,D,tmax,t_prev,dt_save);
+        [Z] = hopf_delays_simu(f,k,md,SynDelay,sig,C,D,tmax,t_prev,dt_save);
                 
         % Detect the peak Frequency in the Fourier Transform of all areas        
         Fourier_Complex = fft(Z,fbins,2); %% Fourier of Z (complex) in 2nd dimension
