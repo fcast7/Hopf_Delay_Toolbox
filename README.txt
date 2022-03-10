@@ -60,7 +60,7 @@ File Name: SC_90aal_32HCP in Structural_Connectivity Folder
 Citation: 
 
 2) Simulation examples used to generate plots in the paper with a=-5; C=AAL90n32s; f=40Hz, MD=0:1:20; expK=-1:0.1:1.7; 
-   Please download them here: https://liveuclac-my.sharepoint.com/:f:/g/personal/skgtfca_ucl_ac_uk/Etzx5-w3LFhMgPhJGXBErlgBwxCK2VYyTOHgUNk0pivHtw?e=kgmcgn 
+   Please download them here: https://liveuclac-my.sharepoint.com/:f:/g/personal/skgtfca_ucl_ac_uk/EjKFAcFpXC1FtJoCKVZoI1YBCB1gMZfZgl2SP83Tb9y9OA?e=1m7WF8 
 
 For other simulations (i.e. different parcellation, different bifurcation parameter, different natural frequency) please write to francesca.castaldo.20@ucl.ac.uk
 
