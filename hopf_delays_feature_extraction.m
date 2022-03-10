@@ -34,25 +34,25 @@ function hopf_delays_feature_extraction(a,dt_save,MD,expK,C)
 
 %% 1) Define your own path for accessing simulations
 if a==-5
-    if C==AAL90n32s
+    if C=='AAL90n32s'
         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg5')
         disp(['Running for' num2str(a) '90AAL32'])
-    elseif C==AAL90n985s
+    elseif C=='AAL90n985s'
         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\985AAL\a_neg5')
         disp(['Running for' num2str(a) '90AAL985'])
-    elseif C==SHEAF200n32s
+    elseif C=='SHEAF200n32s'
         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[SHEAFER]\Simulations')
         disp(['Running for' num2str(a) '200SHEAF32'])
     end
 
 elseif a==-0.2
-    if C==AAL90n32s
+    if C=='AAL90n32s'
     cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg02')
     disp(['Running for' num2str(a) '90AAL32'])
     end
     
 elseif a==-0.05
-    if C==AAL90n32s
+    if C=='AAL90n32s'
         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg005\Simulations')
         disp(['Running for' num2str(a) '90AAL32'])
     end
