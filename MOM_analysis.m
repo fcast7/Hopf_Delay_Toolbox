@@ -1,4 +1,4 @@
-% function MOM_analysis
+function MOM_analysis
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Script to detect MOMs in different frequency bands for a selected point
@@ -22,7 +22,12 @@
 % francesca.castaldo.20@ucl.ac.uk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-a=-5;
+simu=3; %select your simulation of interest
+%simulation_names={'No delays','Weak K','Intermediate K','Strong K','Long delays'};
+
+% for live script 
+% cd('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Simulations\AAL_32subj')
+
 % Frequency bands to analyze (in Hz)
 delta = [0.5 4];
 theta = [4 8];
@@ -31,16 +36,30 @@ beta = [13 30];
 low_pass=30;
 
 % 1- SIMULATION FILE TO READ and DEFINE BASELINE
-addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Code\Hopf_Delay_Toolbox\Data\Simulations'))
-% addpath(genpath('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu'));
+%addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Code\Hopf_Delay_Toolbox\Data\Simulations'))
 
-simulation_file={'a_Remote_K1E1_MD_0a-5.mat','a_Remote_K1E-1_MD_3a-5.mat','a_Remote_K1E1_MD_3a-5.mat','a_Remote_K1E1p7_MD_3a-5.mat','a_Remote_K1E1_MD_10a-5.mat'};
-% simulation_file={'d4_HCP_Sim_Cluster_K1E1_MD0','d4_HCP_Sim_Cluster_K1E-1_MD3','Independent_AAL_HCP_Simu_K1E1_MD3','d4_HCP_Sim_Cluster_K1E1p7_MD3','AAL_HCP_Simu_K1E1_MD10'};
-simulation_names={'No delays','Weak K','Intermediate K','Strong K','Long delays'};
+folder='/Users/joana/Documents/Work/Connectome Frequencies/CabralCastaldo/';
+
+% Good one with AAL32
+% 300 seconds
+%simulation_file={'a_Remote_K1E1_MD_0a-5','300sec_a_Remote_K1E-1_MD_3a-5','300sec_a_Remote_K1E1_MD_3a-5','300sec_a_Remote_K1E1p7_MD_3a-5','a_Remote_K1E1_MD_20a-5'};
+
+% 50 seconds
+%simulation_file={'a_Remote_K1E1_MD_0a-5','a_Remote_K1E-1_MD_3a-5','a_Remote_K1E1_MD_3a-5','a_Remote_K1E1p7_MD_3a-5','a_Remote_K1E1_MD_20a-5'};
+
+% Compare with dt 1e-6 in optimal intermediate 
+simulation_file={'a_Remote_K1E1_MD_0a-5','300sec_a_Remote_K1E-1_MD_3a-5','a_Remote_K1E1_MD_3a-5dt1e-06','300sec_a_Remote_K1E1p7_MD_3a-5','300sec_a_Remote_K1E1_MD_20a-5'};
+
+% Compare with AAL985
+%simulation_file={'300sec_a_Remote_K1E1_MD_0a-5','300sec_a_Remote_K1E-1_MD_3a-5','AAL985_300sec_a_Remote_K1E1_MD_3a-5','300sec_a_Remote_K1E1p7_MD_3a-5','300sec_a_Remote_K1E1_MD_20a-5'};
+
+% Compare with Shaeffer
+%simulation_file={'a_Remote_K1E1_MD_0a-5','a_Remote_K1E-1_MD_3a-5','300s_a_Remote_K1E1_MD_3a-5','a_Remote_K1E1p7_MD_3a-5','a_Remote_K1E1_MD_20a-5'};
+
 
 % BASELINE:  Load data in 0 delay case, intermediate coupling to define the baseline
-% load('d4_HCP_Sim_Cluster_K1E1_MD0.mat'); %a=-5;
-load('a_Remote_K1E1_MD_0a-5.mat')
+
+load([folder simulation_file{1}])
 
 N = size(Zsave,1);
 Order=[1:2:N N:-2:2];
@@ -52,7 +71,7 @@ Zalpha = zeros(size(Zsave));
 Zbeta  = zeros(size(Zsave));
 Zfilt  = zeros(size(Zsave));
 
-for n=1:90
+for n=1:N
     Zdelta(n,:) = bandpasshopf(Zsave(n,:), delta , 1/dt_save);
     Ztheta(n,:) = bandpasshopf(Zsave(n,:), theta , 1/dt_save);
     Zalpha(n,:) = bandpasshopf(Zsave(n,:), alpha , 1/dt_save);
@@ -69,11 +88,12 @@ Zbeta(:,[1:1/dt_save end-1/dt_save:end])=[];
 Zfilt(:,[1:1/dt_save end-1/dt_save:end])=[];
 
 % Define thresholds as 5*STD of the power in each band in each area
-deltathr=5*std(Zdelta,[],2);
-thetathr=5*std(Ztheta,[],2);
-alphathr=5*std(Zalpha,[],2);
-betathr=5*std(Zbeta,[],2);
-filtthr=5*std(Zfilt,[],2);
+sigma_std=5;
+deltathr=sigma_std*std(Zdelta,[],2);
+thetathr=sigma_std*std(Ztheta,[],2);
+alphathr=sigma_std*std(Zalpha,[],2);
+betathr=sigma_std*std(Zbeta,[],2);
+filtthr=sigma_std*std(Zfilt,[],2);
 clear Zalpha Zbeta Ztheta Zfilt
 
 
@@ -81,10 +101,10 @@ clear Zalpha Zbeta Ztheta Zfilt
 % Change the "simu" to look at other scenario outside the optimal working
 % point 
 
-simu=4; %select your simulation of interest
-load(simulation_file{simu})
+
+load([folder simulation_file{simu}])
 N = size(Zsave,1);
-Order=[1:2:N N:-2:2];
+% Order=[1:2:N N:-2:2];
 
 Zsave=Zsave./(5*std(Zsave(:)));
 Zsave=Zsave(Order,:);
@@ -94,7 +114,7 @@ Zalpha=zeros(size(Zsave));
 Zbeta=zeros(size(Zsave));
 Zfilt  = zeros(size(Zsave));
 
-for n=1:90
+for n=1:N
     Zdelta(n,:) = bandpasshopf(Zsave(n,:),delta,1/dt_save);
     Ztheta(n,:) = bandpasshopf(Zsave(n,:),theta,1/dt_save);
     Zalpha(n,:) = bandpasshopf(Zsave(n,:),alpha,1/dt_save);
@@ -226,38 +246,80 @@ end
 Beta_Mean_Duration= mean(MOM_Durations)*dt_save;
 Beta_std_Duration= std(MOM_Durations)*dt_save;
 
-% 4 - Coalition size (N of elements contributing to the emergence of MOMs)
+%
+% - Coalition size (N of elements contributing to the emergence of MOMs)
 
-Delta_coalition_members=sum(T_Delta);
+Delta_coalition_members=sum(T_Delta(:,2:end-2));
 Delta_coalition_members=Delta_coalition_members(Delta_coalition_members>0);
 Delta_coalition_members_mean=mean(Delta_coalition_members);
 Delta_coalition_members_std=std(Delta_coalition_members);
 clear Delta_coalition_members
 
-Theta_coalition_members=sum(T_Theta);
+Theta_coalition_members=sum(T_Theta(:,2:end-2));
 Theta_coalition_members=Theta_coalition_members(Theta_coalition_members>0);
 Theta_coalition_members_mean=mean(Theta_coalition_members);
 Theta_coalition_members_std=std(Theta_coalition_members);
 clear Theta_coalition_members
 
-Alpha_coalition_members=sum(T_Alpha);
+Alpha_coalition_members=sum(T_Alpha(:,2:end-2));
 Alpha_coalition_members=Alpha_coalition_members(Alpha_coalition_members>0);
 Alpha_coalition_members_mean=mean(Alpha_coalition_members);
 Alpha_coalition_members_std=std(Alpha_coalition_members);
 
-Beta_coalition_members=sum(T_Beta);
+Beta_coalition_members=sum(T_Beta(:,2:end-2));
 Beta_coalition_members=Beta_coalition_members(Beta_coalition_members>0);
 Beta_coalition_members_mean=mean(Beta_coalition_members);
 Beta_coalition_members_std=std(Beta_coalition_members);
 
 clear Alpha_coalition_members Beta_coalition_members
 
+figure
+subplot(2,4,1)
+plot_nodes_in_cortex(sum(T_Delta,2))
+title('\delta','FontSize',20)
+view(-90,90)
+camlight;
+subplot(2,4,5)
+plot_nodes_in_cortex(sum(T_Delta,2))
+view(0,0)
+camlight;
+
+subplot(2,4,2)
+plot_nodes_in_cortex(sum(T_Theta,2))
+title('\theta','FontSize',20)
+view(-90,90)
+camlight;
+subplot(2,4,6)
+plot_nodes_in_cortex(sum(T_Theta,2))
+view(0,0)
+camlight;
+
+subplot(2,4,3)
+plot_nodes_in_cortex(sum(T_Alpha,2))
+title('\alpha','FontSize',20)
+view(-90,90)
+camlight;
+subplot(2,4,7)
+plot_nodes_in_cortex(sum(T_Alpha,2))
+view(0,0)
+camlight;
+
+subplot(2,4,4)
+plot_nodes_in_cortex(sum(T_Beta,2))
+title('\beta','FontSize',20)
+view(-90,90)
+camlight;
+subplot(2,4,8)
+plot_nodes_in_cortex(sum(T_Beta,2))
+view(0,0)
+camlight;
+
 % MOM Occupancy
 
-Delta_Occ=sum(T_Delta(:))/numel(T_Delta);
-Theta_Occ=sum(T_Theta(:))/numel(T_Theta);
-Alpha_Occ=sum(T_Alpha(:))/numel(T_Alpha);
-Beta_Occ = sum(T_Beta(:))/numel(T_Beta);
+Delta_Occ=sum(sum(T_Delta(:,2:end-2)))/numel(T_Delta);
+Theta_Occ=sum(sum(T_Theta(:,2:end-2)))/numel(T_Theta);
+Alpha_Occ=sum(sum(T_Alpha(:,2:end-2)))/numel(T_Alpha);
+Beta_Occ =sum(sum(T_Beta (:,2:end-2)))/numel(T_Beta);
 
 % Plot: FIGURE MEAN DURATION, SIZE, OCCUPANCY
 
@@ -271,7 +333,7 @@ bar(3,Alpha_Mean_Duration, 'Facecolor', [.7 .7 1],'Linewidth',1)
 bar(4,Beta_Mean_Duration, 'Facecolor', [.7 1 .7],'Linewidth',1)
 ylim([0 1.2])
 hold on
-errorbar([Delta_Mean_Duration Theta_Mean_Duration Alpha_Mean_Duration Beta_Mean_Duration],[Delta_Mean_Duration Theta_std_Duration Alpha_std_Duration Beta_std_Duration], 'LineStyle', 'none')
+errorbar([Delta_Mean_Duration Theta_Mean_Duration Alpha_Mean_Duration Beta_Mean_Duration],[Delta_std_Duration Theta_std_Duration Alpha_std_Duration Beta_std_Duration], 'LineStyle', 'none')
 xticks([1 2 3 4])
 xticklabels({'\delta','\theta', '\alpha', '\beta'})
 %xlabel('Frequency Bands','FontSize',14,'FontName','Helvetica')
@@ -309,7 +371,7 @@ ylim([0 1])
 
 %% 4- Figure Signals over time
 
-Time_to_plot=25;
+Time_to_plot=22;
 %Zfilt=Zfilt(:,1:Time_to_plot/dt_save);
 
 Phase_filt=angle(hilbert(Zfilt'))';
@@ -375,12 +437,12 @@ for n=1:N
 end
 
 plot(0:dt_save:(length(Zfilt)-1)*dt_save,(1:N)'.*ones(size(Zfilt))+(Zfilt./(2*filtthr)),'k')
-title(['Simulated signal in the 90 units  coupled with K=' num2str(K) ' and MD= ' num2str(MD*1000) ' ms, filtered below ' num2str(low_pass) 'Hz'],'FontSize',14,'FontName','Helvetica')
+%title(['Simulated signal in the ' num2str(N) ' units  coupled with K=' num2str(K) ' and MD= ' num2str(MD*1000) ' ms, filtered below ' num2str(low_pass) 'Hz'],'FontSize',14,'FontName','Helvetica')
 xlabel('Time (seconds)','FontSize',18,'FontName','Helvetica')
-ylabel('Units representing anatomically-defined cortical and subcortical brain areas','FontSize',18,'FontName','Helvetica')
+%ylabel('Units representing anatomically-defined cortical and subcortical brain areas','FontSize',18,'FontName','Helvetica')
 % xlim([0 Interval])
 box off
-set(gca,'YTick',1:N,'Fontsize',8)
+set(gca,'YTick',1:N,'Fontsize',16)
 set(gca,'YTickLabel',[])
 %set(gca,'YTickLabel',label90(Order,:))
 ylim([0 N+1])
@@ -393,164 +455,164 @@ Env_Zfilt=Env_Zfilt(:,1:Time_to_plot/dt_save);
 
 figure
 [AX,H1,H2]=plotyy(0:dt_save:(length(OP)-1)*dt_save,mean(Env_Zfilt),0:dt_save:(length(OP)-1)*dt_save,OP);
-set(AX(2),'ytick',0:0.5:1,'Fontsize',16)
-set(AX(1),'ytick',[0.1 0.2],'ylim',[0.05 0.25],'Fontsize',16)
+set(AX(2),'ytick',0:0.5:1,'ylim',[0 1],'xlim',[0 Time_to_plot],'Fontsize',16)
+set(AX(1),'ytick',[0.1 0.2],'ylim',[0.05 0.25],'xlim',[0 Time_to_plot],'Fontsize',16)
 xlabel('Time (seconds)','Fontsize',16)
 legend({'Mean Amplitude Envelope','Kuramoto Order Parameter'},'Orientation','horizontal','Fontsize',16)
 box off
 
-%% 5- Video MOMs over time
-
-T_timepoints=1:10:5000;
-
-Brain_Mask=niftiread('MNI152_T1_2mm_brain_mask.nii');
-scortex=smooth3(Brain_Mask);
-clear Brain_Mask
-
-% Normalize Zfilt between 0 and 1 for the renderings
-
-Zfilt=Zfilt/(2*std(Zfilt(:)));
-Zfilt(Zfilt>1)=1;
-Zfilt(Zfilt<-1)=-1;
-Zfilt=(Zfilt+1)/2;
-
-load AAL_cog_MNI2mm Parcels_cog
-MNI_coord=Parcels_cog;
-clear aal_cog
-
-% PLOT SPHERES IN THE LOCATION OF EACH AREA
-a=3;
-[x,y,z] = sphere;
-x=a*x;
-y=a*y;
-z=a*z;
-
-figure('color','w')
-
-% videoMOMs = VideoWriter(['VideoMOMs_' simulation_file '.mp4'],'MPEG-4'); %create the video object
-% videoMOMs.FrameRate = 25;
-% videoMOMs.Quality = 25;
-% open(videoMOMs); %open the file for writing
-
-
-hold on
-% First plot a transparent cortex
-cortexpatch=patch(isosurface(scortex,0.1), 'FaceColor', [0.9 0.9 0.9], 'EdgeColor', 'none','FaceAlpha', 0.1);
-reducepatch(cortexpatch,0.1);
-isonormals(scortex,cortexpatch);
-
-% Then plot one sphere in each area
-for n=1:N
-    s(n)=surf(x+MNI_coord(n,2), y+MNI_coord(n,1),z+MNI_coord(n,3),'FaceColor',[0.9 .9 .9],'EdgeColor','none','FaceAlpha',0.2);
-end
-
-axis equal
-material dull
-lighting gouraud
-daspect([1 1 1])
-h = camlight('headlight');
-xlim([5 105])
-ylim([5 85])
-zlim([0 80])
-axis off
-
-view(0,20)
-%view(-90,90) % Top view
-
-for t=1:length(T_timepoints)
-    Delta_color=T_Delta(:,T_timepoints(t));
-    Alpha_color=T_Alpha(:,T_timepoints(t));
-    Beta_color=T_Beta(:,T_timepoints(t));
-    Theta_color=T_Theta(:,T_timepoints(t));
-    Brightness=Zfilt(:,T_timepoints(t));
-    for n=1:N
-        if Beta_color(n)
-            s(n).FaceColor=[(Brightness(n)+1)*0.35 0.5*(Brightness(n)+1) (Brightness(n)+1)*0.35];
-            s(n).FaceAlpha=0.7;
-        elseif Theta_color(n)
-            s(n).FaceColor=[0.5*(Brightness(n)+1) (Brightness(n)+1)*0.35 (Brightness(n)+1)*0.35];
-            s(n).FaceAlpha=0.7;
-        elseif Alpha_color(n)
-            s(n).FaceColor=[(Brightness(n)+1)*0.35 (Brightness(n)+1)*0.35 0.5*(Brightness(n)+1)];
-            s(n).FaceAlpha=0.7;
-        elseif Delta_color(n)
-            s(n).FaceColor=[0.5*(Brightness(n)+1) 0.4*(Brightness(n)+1) 0.25*(Brightness(n)+1)];
-            s(n).FaceAlpha=0.7;
-        else
-            s(n).FaceColor=[0.5+Brightness(n)*.2 0.5+Brightness(n)*.2 0.5+Brightness(n)*.2];
-            s(n).FaceAlpha=0.1;
-        end
-    end
-    title(['T = ' num2str(T_timepoints(t)*dt_save,'%3.2f') 's'])
-    view(t,20)
-    %pause(0.05)
-    camlight(h,'headlight')
-    frame = getframe(gcf);
-%     writeVideo(videoMOMs,frame); %write the image to file
-end
-close(videoMOMs); %close the file
-%SAVE VIDEO
+% %% 5- Video MOMs over time
+% 
+% T_timepoints=1:10:5000;
+% 
+% Brain_Mask=niftiread('MNI152_T1_2mm_brain_mask.nii');
+% scortex=smooth3(Brain_Mask);
+% clear Brain_Mask
+% 
+% % Normalize Zfilt between 0 and 1 for the renderings
+% 
+% Zfilt=Zfilt/(2*std(Zfilt(:)));
+% Zfilt(Zfilt>1)=1;
+% Zfilt(Zfilt<-1)=-1;
+% Zfilt=(Zfilt+1)/2;
+% 
+% load AAL_cog_MNI2mm Parcels_cog
+% MNI_coord=Parcels_cog;
+% clear aal_cog
+% 
+% % PLOT SPHERES IN THE LOCATION OF EACH AREA
+% a=3;
+% [x,y,z] = sphere;
+% x=a*x;
+% y=a*y;
+% z=a*z;
+% 
+% figure('color','w')
+% 
+% % videoMOMs = VideoWriter(['VideoMOMs_' simulation_file '.mp4'],'MPEG-4'); %create the video object
+% % videoMOMs.FrameRate = 25;
+% % videoMOMs.Quality = 25;
+% % open(videoMOMs); %open the file for writing
+% 
+% 
+% hold on
+% % First plot a transparent cortex
+% cortexpatch=patch(isosurface(scortex,0.1), 'FaceColor', [0.9 0.9 0.9], 'EdgeColor', 'none','FaceAlpha', 0.1);
+% reducepatch(cortexpatch,0.1);
+% isonormals(scortex,cortexpatch);
+% 
+% % Then plot one sphere in each area
+% for n=1:N
+%     s(n)=surf(x+MNI_coord(n,2), y+MNI_coord(n,1),z+MNI_coord(n,3),'FaceColor',[0.9 .9 .9],'EdgeColor','none','FaceAlpha',0.2);
+% end
+% 
+% axis equal
+% material dull
+% lighting gouraud
+% daspect([1 1 1])
+% h = camlight('headlight');
+% xlim([5 105])
+% ylim([5 85])
+% zlim([0 80])
+% axis off
+% 
+% view(0,20)
+% %view(-90,90) % Top view
+% 
+% for t=1:length(T_timepoints)
+%     Delta_color=T_Delta(:,T_timepoints(t));
+%     Alpha_color=T_Alpha(:,T_timepoints(t));
+%     Beta_color=T_Beta(:,T_timepoints(t));
+%     Theta_color=T_Theta(:,T_timepoints(t));
+%     Brightness=Zfilt(:,T_timepoints(t));
+%     for n=1:N
+%         if Beta_color(n)
+%             s(n).FaceColor=[(Brightness(n)+1)*0.35 0.5*(Brightness(n)+1) (Brightness(n)+1)*0.35];
+%             s(n).FaceAlpha=0.7;
+%         elseif Theta_color(n)
+%             s(n).FaceColor=[0.5*(Brightness(n)+1) (Brightness(n)+1)*0.35 (Brightness(n)+1)*0.35];
+%             s(n).FaceAlpha=0.7;
+%         elseif Alpha_color(n)
+%             s(n).FaceColor=[(Brightness(n)+1)*0.35 (Brightness(n)+1)*0.35 0.5*(Brightness(n)+1)];
+%             s(n).FaceAlpha=0.7;
+%         elseif Delta_color(n)
+%             s(n).FaceColor=[0.5*(Brightness(n)+1) 0.4*(Brightness(n)+1) 0.25*(Brightness(n)+1)];
+%             s(n).FaceAlpha=0.7;
+%         else
+%             s(n).FaceColor=[0.5+Brightness(n)*.2 0.5+Brightness(n)*.2 0.5+Brightness(n)*.2];
+%             s(n).FaceAlpha=0.1;
+%         end
+%     end
+%     title(['T = ' num2str(T_timepoints(t)*dt_save,'%3.2f') 's'])
+%     view(t,20)
+%     %pause(0.05)
+%     camlight(h,'headlight')
+%     frame = getframe(gcf);
+% %     writeVideo(videoMOMs,frame); %write the image to file
+% end
+% close(videoMOMs); %close the file
+% %SAVE VIDEO
 
 
 
 %% 6- FIGURE with sequence of MOMs over top view from Top
-
-T_timepoints=3500:50:6000; %select the time points more relevant for the explored frequency band 
-
-figure('color','w')
-
-for t=1:length(T_timepoints)
-    
-    subplot_tight(5,ceil(numel(T_timepoints)/5),t,0.001)
-    
-    hold on
-    % First plot a transparent cortex
-    cortexpatch=patch(isosurface(scortex,0.1), 'FaceColor', [0.9 0.9 0.9], 'EdgeColor', 'none','FaceAlpha', 0.1);
-    reducepatch(cortexpatch,0.1);
-    isonormals(scortex,cortexpatch);
-    
-    % Then plot one sphere in each area
-    for n=1:N
-        s(n)=surf(x+MNI_coord(n,2), y+MNI_coord(n,1),z+MNI_coord(n,3),'FaceColor',[0.9 .9 .9],'EdgeColor','none','FaceAlpha',0.2);
-    end
-    
-    view(90,-90)
-    camlight('headlight')
-    axis equal
-    material dull
-    lighting gouraud
-    daspect([1 1 1])
-
-    xlim([5 105])
-    ylim([5 85])
-    zlim([0 80])
-    axis off
-
-    Delta_color=T_Delta(:,T_timepoints(t));
-    Alpha_color=T_Alpha(:,T_timepoints(t));
-    Beta_color=T_Beta(:,T_timepoints(t));
-    Theta_color=T_Theta(:,T_timepoints(t));
-    Brightness=ones(1,N);
-    for n=1:N
-        if Beta_color(n)
-            s(n).FaceColor=[(Brightness(n)+1)*0.5 0.5*(Brightness(n)+1) (Brightness(n)+1)*0.3];
-            s(n).FaceAlpha=0.7;
-        elseif Theta_color(n)
-            s(n).FaceColor=[0.5*(Brightness(n)+1) (Brightness(n)+1)*0.3 (Brightness(n)+1)*0.3];
-            s(n).FaceAlpha=0.7;
-        elseif Alpha_color(n)
-            s(n).FaceColor=[(Brightness(n)+1)*0.3 (Brightness(n)+1)*0.3 0.5*(Brightness(n)+1)];
-            s(n).FaceAlpha=0.7;
-        elseif Delta_color(n)
-            s(n).FaceColor=[0.5*(Brightness(n)+1) 0.4*(Brightness(n)+1) 0.25*(Brightness(n)+1)];
-            s(n).FaceAlpha=0.7;
-        else
-            s(n).FaceColor=[0.5+Brightness(n)*.2 0.5+Brightness(n)*.2 0.5+Brightness(n)*.2];
-            s(n).FaceAlpha=0.1;
-        end
-    end
-    title(['T = ' num2str(T_timepoints(t)*dt_save,'%3.2f') 's'])
-    %pause(0.05)
-end
-
-
+ 
+% T_timepoints=3500:50:6000; %select the time points more relevant for the explored frequency band 
+% 
+% figure('color','w')
+% 
+% for t=1:length(T_timepoints)
+%     
+%     subplot_tight(5,ceil(numel(T_timepoints)/5),t,0.001)
+%     
+%     hold on
+%     % First plot a transparent cortex
+%     cortexpatch=patch(isosurface(scortex,0.1), 'FaceColor', [0.9 0.9 0.9], 'EdgeColor', 'none','FaceAlpha', 0.1);
+%     reducepatch(cortexpatch,0.1);
+%     isonormals(scortex,cortexpatch);
+%     
+%     % Then plot one sphere in each area
+%     for n=1:N
+%         s(n)=surf(x+MNI_coord(n,2), y+MNI_coord(n,1),z+MNI_coord(n,3),'FaceColor',[0.9 .9 .9],'EdgeColor','none','FaceAlpha',0.2);
+%     end
+%     
+%     view(90,-90)
+%     camlight('headlight')
+%     axis equal
+%     material dull
+%     lighting gouraud
+%     daspect([1 1 1])
+% 
+%     xlim([5 105])
+%     ylim([5 85])
+%     zlim([0 80])
+%     axis off
+% 
+%     Delta_color=T_Delta(:,T_timepoints(t));
+%     Alpha_color=T_Alpha(:,T_timepoints(t));
+%     Beta_color=T_Beta(:,T_timepoints(t));
+%     Theta_color=T_Theta(:,T_timepoints(t));
+%     Brightness=ones(1,N);
+%     for n=1:N
+%         if Beta_color(n)
+%             s(n).FaceColor=[(Brightness(n)+1)*0.5 0.5*(Brightness(n)+1) (Brightness(n)+1)*0.3];
+%             s(n).FaceAlpha=0.7;
+%         elseif Theta_color(n)
+%             s(n).FaceColor=[0.5*(Brightness(n)+1) (Brightness(n)+1)*0.3 (Brightness(n)+1)*0.3];
+%             s(n).FaceAlpha=0.7;
+%         elseif Alpha_color(n)
+%             s(n).FaceColor=[(Brightness(n)+1)*0.3 (Brightness(n)+1)*0.3 0.5*(Brightness(n)+1)];
+%             s(n).FaceAlpha=0.7;
+%         elseif Delta_color(n)
+%             s(n).FaceColor=[0.5*(Brightness(n)+1) 0.4*(Brightness(n)+1) 0.25*(Brightness(n)+1)];
+%             s(n).FaceAlpha=0.7;
+%         else
+%             s(n).FaceColor=[0.5+Brightness(n)*.2 0.5+Brightness(n)*.2 0.5+Brightness(n)*.2];
+%             s(n).FaceAlpha=0.1;
+%         end
+%     end
+%     title(['T = ' num2str(T_timepoints(t)*dt_save,'%3.2f') 's'])
+%     %pause(0.05)
+% end
+% 
+% 
