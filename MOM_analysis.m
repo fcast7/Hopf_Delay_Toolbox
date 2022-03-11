@@ -10,7 +10,7 @@ function MOM_analysis
 %  2. For a selected working point (SIMU), define the time points when the power
 %     is above threshold in bands Delta, Theta, Alpha and Beta
 %  3. Measure MOMs size, Duration and Occupancy. Plot.
-%  4. Figure signals overtime (for each parcellated area) 
+%  4. Figure signals overtime (for each parcellated area) with shaded areas
 %  5. Video MOMs over time 
 %  6. Figure with sequence of relevant MOMs over top view from Top
 
@@ -36,8 +36,10 @@ beta = [13 30];
 low_pass=30;
 
 % 1- SIMULATION FILE TO READ and DEFINE BASELINE
-%addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Code\Hopf_Delay_Toolbox\Data\Simulations'))
+% Simulation files are defined as simulation_file={'baseline', 'weak coupling', 'optimal point', 'strong coupling', 'long delays'}
 
+% Define your own path
+%addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Code\Hopf_Delay_Toolbox\Data\Simulations'))
 folder='/Users/joana/Documents/Work/Connectome Frequencies/CabralCastaldo/';
 
 % Good one with AAL32
