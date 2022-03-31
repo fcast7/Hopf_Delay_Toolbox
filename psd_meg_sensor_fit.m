@@ -16,41 +16,46 @@ function psd_meg_sensor_fit(a,dt_save,MD,expK,C)
 %  expK: range of Coupling
 %  C: structural connectivity
 %
-%  Example: psd_meg_sensor_fit(-5,2e-3,0:1:20,-1:0.1:1.7,AAL90n32s)
+%  Try this Example: psd_meg_sensor_fit(-5,2e-3,0:1:20,-1:0.1:1.7,'AAL90n32s')
 %
 %      1) Define parameters
 %      2) Loads MEG Empirical (Sensor space)
 %      3) Calculates and saves all simulated PSD
 %      4) Measures the model performance (Squared Euclidean Distance and Correlation)
+% 
+% To download/access existing simulations please access this link:
+% https://liveuclac-my.sharepoint.com/:f:/g/personal/skgtfca_ucl_ac_uk/EjKFAcFpXC1FtJoCKVZoI1YBCB1gMZfZgl2SP83Tb9y9OA?e=E4Ueup 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% DEFINE the current folder to save the output
+% DEFINE your current folder to A) load your simulations and B) save the
+% output in the same folder
 
-if a==-5
-    if C==AAL90n32s
-        cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg5')
-        disp(['Running for' num2str(a) '90AAL32'])
-    elseif C==AAL90n985s
-        cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\985AAL\a_neg5')
-        disp(['Running for' num2str(a) '90AAL985'])
-    elseif C==SHEAF200n32s
-        cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[SHEAFER]\Simulations')
-        disp(['Running for' num2str(a) '200SHEAF32'])
-    end
 
-elseif a==-0.2
-    if C==AAL90n32s
-    cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg02')
-    disp(['Running for' num2str(a) '90AAL32'])
-    end
-    
-elseif a==-0.05
-    if C==AAL90n32s
-        cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg005\Simulations')
-        disp(['Running for' num2str(a) '90AAL32'])
-    end
-end
+% if a==-5
+%     if C==AAL90n32s
+%         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg5')
+%         disp(['Running for' num2str(a) '90AAL32'])
+%     elseif C==AAL90n985s
+%         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\985AAL\a_neg5')
+%         disp(['Running for' num2str(a) '90AAL985'])
+%     elseif C==SHEAF200n32s
+%         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[SHEAFER]\Simulations')
+%         disp(['Running for' num2str(a) '200SHEAF32'])
+%     end
+% 
+% elseif a==-0.2
+%     if C==AAL90n32s
+%     cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg02')
+%     disp(['Running for' num2str(a) '90AAL32'])
+%     end
+%     
+% elseif a==-0.05
+%     if C==AAL90n32s
+%         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg005\Simulations')
+%         disp(['Running for' num2str(a) '90AAL32'])
+%     end
+% end
 
 
 % 1) Define simulation Parameters
@@ -79,8 +84,9 @@ Corr_Fit_MEG_PSD    = zeros(length(K),length(MD));
 % mean over subjects (Mean_PSD_Planar_89). Data can be found at the HCP
 % website. 
 
-load('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\MEG_Data\MEG_Sensor\Results\MEG_MeanPSD_Planar_89.mat')
-load('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\MEG_Data\MEG_Sensor\Results\Mean_PSD_Planar_89.mat')
+%Define your path
+load('MEG_MeanPSD_Planar_89.mat')
+load('Mean_PSD_Planar_89.mat')
 
 
 % 3) Calculate and save the model PSD in a file called MEG_PSD_Fitting (see
