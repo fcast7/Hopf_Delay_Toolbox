@@ -64,4 +64,3 @@ For other simulations (i.e. different parcellation, different bifurcation parame
 
 3) MEG DATA: https://humanconnectome.org/storage/app/media/documentation/s1200/HCP_S1200_Release_Reference_Manual.pdf
 
-
