@@ -9,32 +9,30 @@ function meg_psd_model_screening(a, MD, expK, C)
 %     expK:    range of couplings (expK)
 %     C:       structural connectome, nodes_parcellation_nsubj (i.e. AAL90n32s) 
 %
-%     Example: network_parameter_space(-0.05,0:1:20,-1:0.1:1.7,AAL90n32s)
-%     Demo:    network_parameter_space(-5,0:1:20,-1:0.1:1.7,AAL90n32s)
 %             
 %     Output:  Model disparity plot (Squared Euclidean Distance). Best fitting 
 %              points visualised both for each subject and their mean
 %
-% Example: meg_psd_model_screening(-5,0:1:20,-1:0.1:1.7, AAL90n32s)
+% Example: meg_psd_model_screening(-5,0:1:20,-1:0.1:1.7, 'AAL90n32s')
 % Code by Francesca Castaldo, 2022 francesca.castaldo.20@ucl.ac.uk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 % Add the toolbox to your own path
-addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Code\Hopf_Delay_Toolbox\Hopf_Delay_Toolbox_2ndVersion'))
+% addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Code\Hopf_Delay_Toolbox\Hopf_Delay_Toolbox_2ndVersion'))
 
 % if a==-5
-%     if C==AAL90n32s
+%     if C=='AAL90n32s'
 %         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg5')
 %         load ('MEG_sensor_PSD_Fitting.mat');
 %         K=10.^(expK);
 %         disp(['Running for' num2str(a) '90AAL32'])
-%     elseif C==AAL90n985s
+%     elseif C=='AAL90n985s'
 %         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\985AAL\a_neg5')
 %         load ('MEG_sensor_PSD_Fitting.mat');
 %         K=10.^(expK);
 %         disp(['Running for' num2str(a) '90AAL985'])
-%     elseif C==SHEAF200n32s
+%     elseif C=='SHEAF200n32s'
 %         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[SHEAFER]\Simulations')
 %         load ('MEG_sensor_PSD_Fitting.mat');
 %         K=10.^(expK);
@@ -42,7 +40,7 @@ addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Cast
 %     end
 % 
 % elseif a==-0.2
-%     if C==AAL90n32s
+%     if C=='AAL90n32s'
 %     cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg02')
 %     load ('MEG_sensor_PSD_Fitting.mat');
 %     K=10.^(expK);
@@ -50,7 +48,7 @@ addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Cast
 %     end
 %     
 % elseif a==-0.05
-%     if C==AAL90n32s
+%     if C=='AAL90n32s'
 %         cd('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu\32AAL\a_neg005\Simulations')
 %         load ('MEG_sensor_PSD_Fitting.mat');
 %         K=10.^(expK);
@@ -60,11 +58,11 @@ addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Cast
 
 
 % Demo Data:
-if a==-5 && C==AAL90n32s
+if a==-5
     load ('MEG_sensor_PSD_Fitting.mat');
 end
 
-
+K=10.^(expK);
 %% Fit for each subject
 
 for s=1:89
