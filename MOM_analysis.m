@@ -10,7 +10,7 @@ function MOM_analysis
 %  2. For a selected working point (SIMU), define the time points when the power
 %     is above threshold in bands Delta, Theta, Alpha and Beta
 %  3. Measure MOMs size, Duration and Occupancy. Plot.
-%  4. Figure signals overtime (for each parcellated area) with shaded areas
+%  4. Figure signals overtime (for each parcellated area) 
 %  5. Video MOMs over time 
 %  6. Figure with sequence of relevant MOMs over top view from Top
 
@@ -22,8 +22,8 @@ function MOM_analysis
 % francesca.castaldo.20@ucl.ac.uk
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-simu=3; %select your simulation of interest
-%simulation_names={'No delays','Weak K','Intermediate K','Strong K','Long delays'};
+simu=1; %select your simulation of interest
+simulation_names={'NoDelays','WeakK','IntermediateK','StrongK','LongDelays'};
 
 % for live script 
 % cd('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Simulations\AAL_32subj')
@@ -36,21 +36,20 @@ beta = [13 30];
 low_pass=30;
 
 % 1- SIMULATION FILE TO READ and DEFINE BASELINE
-% Simulation files are defined as simulation_file={'baseline', 'weak coupling', 'optimal point', 'strong coupling', 'long delays'}
-
-% Define your own path
 %addpath(genpath('C:\Users\fcast\OneDrive - University College London\Cabral_Castaldo\Code\Hopf_Delay_Toolbox\Data\Simulations'))
+% addpath(genpath('C:\Users\fcast\OneDrive - University College London\CLUSTER\PROJECT[AAL]\New_Simu'));
+
+%folder='/Users/joana/Documents/Work/Connectome Frequencies/CabralCastaldo/Shaeffer50s/';
 folder='/Users/joana/Documents/Work/Connectome Frequencies/CabralCastaldo/';
 
 % Good one with AAL32
 % 300 seconds
-%simulation_file={'a_Remote_K1E1_MD_0a-5','300sec_a_Remote_K1E-1_MD_3a-5','300sec_a_Remote_K1E1_MD_3a-5','300sec_a_Remote_K1E1p7_MD_3a-5','a_Remote_K1E1_MD_20a-5'};
-
+simulation_file={'a_Remote_K1E1_MD_0a-5','300sec_a_Remote_K1E-1_MD_3a-5','300sec_a_Remote_K1E1_MD_3a-5','300sec_a_Remote_K1E1p7_MD_3a-5','a_Remote_K1E1_MD_20a-5'};
 % 50 seconds
 %simulation_file={'a_Remote_K1E1_MD_0a-5','a_Remote_K1E-1_MD_3a-5','a_Remote_K1E1_MD_3a-5','a_Remote_K1E1p7_MD_3a-5','a_Remote_K1E1_MD_20a-5'};
 
 % Compare with dt 1e-6 in optimal intermediate 
-simulation_file={'a_Remote_K1E1_MD_0a-5','300sec_a_Remote_K1E-1_MD_3a-5','a_Remote_K1E1_MD_3a-5dt1e-06','300sec_a_Remote_K1E1p7_MD_3a-5','300sec_a_Remote_K1E1_MD_20a-5'};
+%simulation_file={'a_Remote_K1E1_MD_0a-5','300sec_a_Remote_K1E-1_MD_3a-5','a_Remote_K1E1_MD_3a-5dt1e-06','300sec_a_Remote_K1E1p7_MD_3a-5','300sec_a_Remote_K1E1_MD_20a-5'};
 
 % Compare with AAL985
 %simulation_file={'300sec_a_Remote_K1E1_MD_0a-5','300sec_a_Remote_K1E-1_MD_3a-5','AAL985_300sec_a_Remote_K1E1_MD_3a-5','300sec_a_Remote_K1E1p7_MD_3a-5','300sec_a_Remote_K1E1_MD_20a-5'};
@@ -60,7 +59,7 @@ simulation_file={'a_Remote_K1E1_MD_0a-5','300sec_a_Remote_K1E-1_MD_3a-5','a_Remo
 
 
 % BASELINE:  Load data in 0 delay case, intermediate coupling to define the baseline
-
+% load('d4_HCP_Sim_Cluster_K1E1_MD0.mat'); %a=-5;
 load([folder simulation_file{1}])
 
 N = size(Zsave,1);
@@ -248,8 +247,7 @@ end
 Beta_Mean_Duration= mean(MOM_Durations)*dt_save;
 Beta_std_Duration= std(MOM_Durations)*dt_save;
 
-%
-% - Coalition size (N of elements contributing to the emergence of MOMs)
+% 4 - Coalition size (N of elements contributing to the emergence of MOMs)
 
 Delta_coalition_members=sum(T_Delta(:,2:end-2));
 Delta_coalition_members=Delta_coalition_members(Delta_coalition_members>0);
@@ -275,47 +273,6 @@ Beta_coalition_members_std=std(Beta_coalition_members);
 
 clear Alpha_coalition_members Beta_coalition_members
 
-figure
-subplot(2,4,1)
-plot_nodes_in_cortex(sum(T_Delta,2))
-title('\delta','FontSize',20)
-view(-90,90)
-camlight;
-subplot(2,4,5)
-plot_nodes_in_cortex(sum(T_Delta,2))
-view(0,0)
-camlight;
-
-subplot(2,4,2)
-plot_nodes_in_cortex(sum(T_Theta,2))
-title('\theta','FontSize',20)
-view(-90,90)
-camlight;
-subplot(2,4,6)
-plot_nodes_in_cortex(sum(T_Theta,2))
-view(0,0)
-camlight;
-
-subplot(2,4,3)
-plot_nodes_in_cortex(sum(T_Alpha,2))
-title('\alpha','FontSize',20)
-view(-90,90)
-camlight;
-subplot(2,4,7)
-plot_nodes_in_cortex(sum(T_Alpha,2))
-view(0,0)
-camlight;
-
-subplot(2,4,4)
-plot_nodes_in_cortex(sum(T_Beta,2))
-title('\beta','FontSize',20)
-view(-90,90)
-camlight;
-subplot(2,4,8)
-plot_nodes_in_cortex(sum(T_Beta,2))
-view(0,0)
-camlight;
-
 % MOM Occupancy
 
 Delta_Occ=sum(sum(T_Delta(:,2:end-2)))/numel(T_Delta);
@@ -326,21 +283,21 @@ Beta_Occ =sum(sum(T_Beta (:,2:end-2)))/numel(T_Beta);
 % Plot: FIGURE MEAN DURATION, SIZE, OCCUPANCY
 
 % barplot
-figure
+figure('Position',[31   334   449   218],'Name',simulation_names{simu})
 subplot(1,3,1,'Linewidth',1,'Fontsize',14)
 hold on
 bar(1,Delta_Mean_Duration, 'Facecolor', [1 .8 .5],'Linewidth',1)
 bar(2,Theta_Mean_Duration, 'Facecolor', [1 .7 .7],'Linewidth',1)
 bar(3,Alpha_Mean_Duration, 'Facecolor', [.7 .7 1],'Linewidth',1)
 bar(4,Beta_Mean_Duration, 'Facecolor', [.7 1 .7],'Linewidth',1)
-ylim([0 1.2])
+ylim([0 1.05])
 hold on
 errorbar([Delta_Mean_Duration Theta_Mean_Duration Alpha_Mean_Duration Beta_Mean_Duration],[Delta_std_Duration Theta_std_Duration Alpha_std_Duration Beta_std_Duration], 'LineStyle', 'none')
 xticks([1 2 3 4])
 xticklabels({'\delta','\theta', '\alpha', '\beta'})
 %xlabel('Frequency Bands','FontSize',14,'FontName','Helvetica')
-ylabel('Duration (sec)','FontSize',14,'FontName','Helvetica')
-title(simulation_file{simu},'FontSize',14,'FontName','Helvetica','Interpreter','none')
+ylabel('MOM Duration (sec)','FontSize',14,'FontName','Helvetica')
+
 
 subplot(1,3,2,'Linewidth',1,'Fontsize',14)
 hold on
@@ -353,9 +310,9 @@ errorbar([Delta_coalition_members_mean Theta_coalition_members_mean Alpha_coalit
 xticks([1 2 3 4])
 xticklabels({'\delta','\theta', '\alpha', '\beta'})
 %xlabel('Frequency Bands','FontSize',14,'FontName','Helvetica')
-ylabel('MOM size','FontSize',14,'FontName','Helvetica')
+ylabel('MOM Size','FontSize',14,'FontName','Helvetica')
 %title('Working point Delay=3ms, K=10','FontSize',18,'FontName','Helvetica')
-ylim([0 70])
+ylim([0 72])
 
 subplot(1,3,3,'Linewidth',1,'Fontsize',14)
 hold on
@@ -369,11 +326,11 @@ xticklabels({'\delta','\theta', '\alpha', '\beta'})
 %xlabel('Frequency Bands','FontSize',14,'FontName','Helvetica')
 ylabel('MOM Occupancy','FontSize',14,'FontName','Helvetica')
 %title('Working point Delay=3ms, K=10','FontSize',18,'FontName','Helvetica')
-ylim([0 1])
+ylim([0 0.55])
 
 %% 4- Figure Signals over time
 
-Time_to_plot=22;
+Time_to_plot=25;
 %Zfilt=Zfilt(:,1:Time_to_plot/dt_save);
 
 Phase_filt=angle(hilbert(Zfilt'))';
@@ -463,102 +420,104 @@ xlabel('Time (seconds)','Fontsize',16)
 legend({'Mean Amplitude Envelope','Kuramoto Order Parameter'},'Orientation','horizontal','Fontsize',16)
 box off
 
-% %% 5- Video MOMs over time
-% 
-% T_timepoints=1:10:5000;
-% 
-% Brain_Mask=niftiread('MNI152_T1_2mm_brain_mask.nii');
-% scortex=smooth3(Brain_Mask);
-% clear Brain_Mask
-% 
-% % Normalize Zfilt between 0 and 1 for the renderings
-% 
-% Zfilt=Zfilt/(2*std(Zfilt(:)));
-% Zfilt(Zfilt>1)=1;
-% Zfilt(Zfilt<-1)=-1;
-% Zfilt=(Zfilt+1)/2;
-% 
-% load AAL_cog_MNI2mm Parcels_cog
-% MNI_coord=Parcels_cog;
-% clear aal_cog
-% 
-% % PLOT SPHERES IN THE LOCATION OF EACH AREA
-% a=3;
-% [x,y,z] = sphere;
-% x=a*x;
-% y=a*y;
-% z=a*z;
-% 
-% figure('color','w')
-% 
-% % videoMOMs = VideoWriter(['VideoMOMs_' simulation_file '.mp4'],'MPEG-4'); %create the video object
-% % videoMOMs.FrameRate = 25;
-% % videoMOMs.Quality = 25;
-% % open(videoMOMs); %open the file for writing
-% 
-% 
-% hold on
-% % First plot a transparent cortex
-% cortexpatch=patch(isosurface(scortex,0.1), 'FaceColor', [0.9 0.9 0.9], 'EdgeColor', 'none','FaceAlpha', 0.1);
-% reducepatch(cortexpatch,0.1);
-% isonormals(scortex,cortexpatch);
-% 
-% % Then plot one sphere in each area
-% for n=1:N
-%     s(n)=surf(x+MNI_coord(n,2), y+MNI_coord(n,1),z+MNI_coord(n,3),'FaceColor',[0.9 .9 .9],'EdgeColor','none','FaceAlpha',0.2);
-% end
-% 
-% axis equal
-% material dull
-% lighting gouraud
-% daspect([1 1 1])
-% h = camlight('headlight');
-% xlim([5 105])
-% ylim([5 85])
-% zlim([0 80])
-% axis off
-% 
-% view(0,20)
-% %view(-90,90) % Top view
-% 
-% for t=1:length(T_timepoints)
-%     Delta_color=T_Delta(:,T_timepoints(t));
-%     Alpha_color=T_Alpha(:,T_timepoints(t));
-%     Beta_color=T_Beta(:,T_timepoints(t));
-%     Theta_color=T_Theta(:,T_timepoints(t));
-%     Brightness=Zfilt(:,T_timepoints(t));
-%     for n=1:N
-%         if Beta_color(n)
-%             s(n).FaceColor=[(Brightness(n)+1)*0.35 0.5*(Brightness(n)+1) (Brightness(n)+1)*0.35];
-%             s(n).FaceAlpha=0.7;
-%         elseif Theta_color(n)
-%             s(n).FaceColor=[0.5*(Brightness(n)+1) (Brightness(n)+1)*0.35 (Brightness(n)+1)*0.35];
-%             s(n).FaceAlpha=0.7;
-%         elseif Alpha_color(n)
-%             s(n).FaceColor=[(Brightness(n)+1)*0.35 (Brightness(n)+1)*0.35 0.5*(Brightness(n)+1)];
-%             s(n).FaceAlpha=0.7;
-%         elseif Delta_color(n)
-%             s(n).FaceColor=[0.5*(Brightness(n)+1) 0.4*(Brightness(n)+1) 0.25*(Brightness(n)+1)];
-%             s(n).FaceAlpha=0.7;
-%         else
-%             s(n).FaceColor=[0.5+Brightness(n)*.2 0.5+Brightness(n)*.2 0.5+Brightness(n)*.2];
-%             s(n).FaceAlpha=0.1;
-%         end
-%     end
-%     title(['T = ' num2str(T_timepoints(t)*dt_save,'%3.2f') 's'])
-%     view(t,20)
-%     %pause(0.05)
-%     camlight(h,'headlight')
-%     frame = getframe(gcf);
-% %     writeVideo(videoMOMs,frame); %write the image to file
-% end
-% close(videoMOMs); %close the file
-% %SAVE VIDEO
+%% 5- Video MOMs over time
+
+T_timepoints=6:10:5006;
+
+Brain_Mask=niftiread('MNI152_T1_2mm_brain_mask.nii');
+scortex=smooth3(Brain_Mask);
+clear Brain_Mask
+
+% Normalize Zfilt between 0 and 1 for the renderings
+
+Zfilt=Zfilt/(2*std(Zfilt(:)));
+Zfilt(Zfilt>1)=1;
+Zfilt(Zfilt<-1)=-1;
+Zfilt=(Zfilt+1)/2;
+
+load AAL_cog_MNI2mm Parcels_cog
+MNI_coord=Parcels_cog;
+clear aal_cog
+
+% PLOT SPHERES IN THE LOCATION OF EACH AREA
+a=3;
+[x,y,z] = sphere;
+x=a*x;
+y=a*y;
+z=a*z;
+
+figure('color','w','Position',[388   281   579   366])
+
+videoMOMs = VideoWriter(['MOMs_' simulation_names{simu} '.mp4'],'MPEG-4'); %create the video object
+videoMOMs.FrameRate = round(1/(dt_save*10));
+videoMOMs.Quality = 25;
+open(videoMOMs); %open the file for writing
+
+hold on
+% First plot a transparent cortex
+cortexpatch=patch(isosurface(scortex,0.1), 'FaceColor', [0.9 0.9 0.9], 'EdgeColor', 'none','FaceAlpha', 0.1);
+reducepatch(cortexpatch,0.1);
+isonormals(scortex,cortexpatch);
+
+% Then plot one sphere in each area
+for n=1:N
+    s(n)=surf(x+MNI_coord(n,2), y+MNI_coord(n,1),z+MNI_coord(n,3),'FaceColor',[0.9 .9 .9],'EdgeColor','none','FaceAlpha',0.2);
+end
+
+axis equal
+material dull
+lighting gouraud
+daspect([1 1 1])
+h = camlight('headlight');
+xlim([5 105])
+ylim([5 85])
+zlim([0 80])
+axis off
+
+view(0,20)
+%view(-90,90) % Top view
+
+for t=1:length(T_timepoints)
+    Delta_color=T_Delta(:,T_timepoints(t));
+    Alpha_color=T_Alpha(:,T_timepoints(t));
+    Beta_color=T_Beta(:,T_timepoints(t));
+    Theta_color=T_Theta(:,T_timepoints(t));
+    Brightness=Zfilt(:,T_timepoints(t));
+    for n=1:N
+        if Beta_color(n)
+            s(n).FaceColor=[(Brightness(n)+1)*0.35 0.5*(Brightness(n)+1) (Brightness(n)+1)*0.35];
+            s(n).FaceAlpha=0.7;
+        elseif Theta_color(n)
+            s(n).FaceColor=[0.5*(Brightness(n)+1) (Brightness(n)+1)*0.35 (Brightness(n)+1)*0.35];
+            s(n).FaceAlpha=0.7;
+        elseif Alpha_color(n)
+            s(n).FaceColor=[(Brightness(n)+1)*0.35 (Brightness(n)+1)*0.35 0.5*(Brightness(n)+1)];
+            s(n).FaceAlpha=0.7;
+        elseif Delta_color(n)
+            s(n).FaceColor=[0.5*(Brightness(n)+1) 0.4*(Brightness(n)+1) 0.25*(Brightness(n)+1)];
+            s(n).FaceAlpha=0.7;
+        else
+            s(n).FaceColor=[0.5+Brightness(n)*.2 0.5+Brightness(n)*.2 0.5+Brightness(n)*.2];
+            s(n).FaceAlpha=0.1;
+        end
+    end
+    title(['T = ' num2str((T_timepoints(t)-5)*dt_save,'%3.2f') 's'])
+    view(t*.5,20)
+    %pause(0.05)
+    camlight(h,'headlight')
+    frame = getframe(gcf);
+    writeVideo(videoMOMs,frame); %write the image to file
+end
+close(videoMOMs); %close the file
 
 
 
-%% 6- FIGURE with sequence of MOMs over top view from Top
- 
+%SAVE VIDEO
+
+
+
+% % 6- FIGURE with sequence of MOMs over time view from Top
+%  
 % T_timepoints=3500:50:6000; %select the time points more relevant for the explored frequency band 
 % 
 % figure('color','w')
