@@ -9,7 +9,7 @@ function network_parameter_space(a,MD,expK,C)
 %     expK:    range of couplings (expK)
 %     C:       structural connectome, nodes_parcellation_nsubj (i.e. AAL90n32s) 
 %
-%     Demo:    network_parameter_space(-5,0:1:20,-1:0.1:1.7,AAL90n32s)
+%     Demo:    network_parameter_space(-5,0:1:20,-1:0.1:1.7,'AAL90n32s')
 %             
 %     Output:  Parameter space plots (Global Peak Frequency, Mean Peak Frequency, Metastability,
 %              extra: Spectral Entropy )
@@ -51,7 +51,7 @@ function network_parameter_space(a,MD,expK,C)
 % end
 
 % Load DEMO simulations
-if a==-5 && C==AAL90n32s
+if a==-5
     load('Model_Spectral_Features.mat');
     disp(['Running for' num2str(a) '90AAL32'])
 end
@@ -148,8 +148,5 @@ colorbar
 % colorbar
 % title('Oscillation Frequency')
 % colormap(jet)
-
-
-
 
 
